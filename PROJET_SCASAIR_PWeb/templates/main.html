@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<head>
+   <title>Temperature evolution</title> 
+      <!-- Latest compiled and minified CSS -->
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+      integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+   <!-- Optional theme -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+      integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+   <!-- Latest compiled and minified JavaScript -->
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+      integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
+   </script>
+   <link rel="stylesheet"  href="{{ url_for('static', filename='css/animate.css') }}">
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+   <link   rel="shortcut icon" href="{{ url_for('static', filename='img/icone.ico') }}">
+   
+   <style>
+		.container1{
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			text-align: center;
+		}	
+
+		.led-container {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			text-align: center;
+			padding: 20px;
+		}
+
+		.led-box {
+			height: 30px;
+			width: 10%;
+			margin: 10px 0;
+			float: left;
+		}
+
+		.led-red-active {
+			margin: 0 auto;
+			width: 50px;
+			height: 50px;
+			background-color: #f00;
+			border-radius: 50%;
+			box-shadow: rgba(0, 0, 0, 0.2) 0 0px 7px 0px, inset #631b1be0 0 -1px 9px, #ff0000 0 1px 15px;
+		}
+
+		.led-red-inactive {
+			margin: 0 auto;
+			width: 50px;
+			height: 50px;
+			background-color: #610000;
+			border-radius: 50%;
+			box-shadow: rgba(0, 0, 0, 0.1) 0 -1px 7px 0px, inset #441313 0 -1px 9px;
+		}
+
+		.led-green-active {
+			margin: 0 auto;
+			width: 50px;
+			height: 50px;
+			background-color: #ABFF00;
+			border-radius: 50%;
+			box-shadow: rgba(0, 0, 0, 0.2) 0 0px 7px 0px, inset #34460f 0 -1px 9px, #6ac500 0 1px 15px;
+		}
+
+		.led-green-inactive {
+			margin: 0 auto;
+			width: 50px;
+			height: 50px;
+			background-color: rgb(67, 100, 0);
+			border-radius: 50%;
+			box-shadow: rgba(0, 0, 0, 0.1) 0 0px 7px 0px, inset #34460f 0 -1px 9px;
+		}
+
+		.led-orange-active {
+			margin: 0 auto;
+			width: 50px;
+			height: 50px;
+			background-color: rgb(255, 225, 56);
+			border-radius: 50%;
+			box-shadow: rgba(0, 0, 0, 0.2) 0 0px 7px 0px, inset rgb(145, 87, 0) 0 -1px 9px, rgb(195, 165, 0) 0 1px 15px;
+		}
+
+		.led-orange-inactive {
+			margin: 0 auto;
+			width: 50px;
+			height: 50px;
+			background-color: rgb(121, 88, 0);
+			border-radius: 50%;
+			box-shadow: rgba(0, 0, 0, 0.1) 0 0px 7px 0px, inset rgb(145, 87, 0) 0 -1px 9px;
+		}
+   </style>
+</head>
+
+<body>
+	<div class="container">
+		<div class = "row">
+			<div class="col-md-6 text-left">
+				<br> <br>
+				<img class="p-r-10" src="{{ url_for('static', filename='img/ensakLogo.png') }}" alt="">
+			</div>
+			
+			<div class="col-md-6 text-right">
+				<br> <br>
+				<img class="p-r-10" src="{{ url_for('static', filename='img/cnrstLogoS.png') }}" alt="">
+				<img class="p-r-10"src="{{ url_for('static', filename='img/OCP_Group_S.png') }}" alt="">
+				<!-- <img src="{{ url_for('static', filename='img/rasp.png') }}" alt=""> -->
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="text-center pd-90 wow bounceIn" data-wow-duration="2s" style="display: flex; justify-content:space-between">
+			<h1 class="title" style="font-weight: bold; font-style:italic">SCAISAR Intelligent and Blockchain Cybersecurity-based Agriculture IOT Platform</h1>
+			<a href="http://192.168.43.209:1880/ui/" target="_blank" class="node" style="display: flex; justify-content:space-between">
+				Node-RED GI
+			</a>
+			<!-- <hr class="line"> -->
+		</div>	
+			
+			<!-- <div class="text-right pd-b-30">
+				<a href="http://127.0.0.1:1880/ui/#!/1?socketid=01Rqem5I3fAgGxuKAAAB" target="_blank" class="node">
+					Node-RED GI
+				</a>
+			</div>	
+		###################### Temperature ##################################################### -->
+		<br> <br>
+		<div style="display: flex;text-align: center;justify-content: center;">
+			<h4 style="font-weight:bold">IOT Topology Average's Temperature: <span id="tmpG" style="color: rgb(255, 99, 132); font-size:20px; font-weight: bold"></span></h4>
+		</div>
+		<div class="row">
+			<div class="container pd-b-30" style="display: flex;text-align: center;justify-content: center;">
+			<div class="col-md-4  wow fadeInLeft"  data-wow-duration="4s">
+				<canvas id="canvas1"></canvas>
+				<p class="text-center">Node1 Temperature Average <span class="red" id="tmp1" style="color: rgb(54, 162, 235);  font: size 18px; font-weight: bold"></span></p>
+			</div>
+			<div class="col-md-4 wow fadeInDown"   data-wow-duration="4s">
+				<canvas id="canvas2"></canvas>
+				<p class="text-center">Node2 Temperature Average <span class="red" id="tmp2" style="color:rgb(255, 205, 86); font-size:18px; font-weight: bold"></span></p>
+			</div>
+			<div  class="col-md-4  wow fadeInRight"  data-wow-duration="4s">
+				<canvas id="canvas3"></canvas>
+				<p class="text-center">Node3 Temperature Average <span class="red" id="tmp3" style="color: rgb(153, 102, 255); font-size:18px; font-weight: bold"></span></p>
+			</div>
+			<div class="col-md-4  wow fadeInLeft"  data-wow-duration="4s">
+				<canvas id="canvas4"></canvas>
+				<p class="text-center">Node4 Temperature Average <span class="red" id="tmp4" style="color: rgb(255, 99, 132); font-size:18px; font-weight: bold"></span></p>
+			</div>
+			<div  class="col-md-4  wow fadeInRight"  data-wow-duration="4s">
+				<canvas id="canvas5"></canvas>
+				<p class="text-center">Node5 Temperature Average <span class="red" id="tmp5" style="color: rgb(54, 162, 235); font-size:18px; font-weight: bold"></span></p>
+			</div>
+		</div>
+			
+		<br>
+
+		<!-- ########################### Himidity ################################################################## -->
+		<div style="display: flex;text-align: center;justify-content: center;">
+			<h4 style="font-weight:bold">IOT Topology Average's Himidity : <span id="humG" style="color: rgb(255, 99, 132); font-size:20px; font-weight: bold"></span></h4>
+		</div>
+		<div class="row">
+			<div class="container pd-b-30" style="display: flex;text-align: center;justify-content: center;">
+				<div class="col-md-4  wow fadeInLeft"  data-wow-duration="4s">
+					<canvas id="canvas6"></canvas>
+					<p class="text-center">Node1 Himidity Average <span class="red" id="hum1" style="color: rgb(54, 162, 235);  font: size 18px; font-weight: bold"></span></hp>
+				</div>
+				<div class="col-md-4 wow fadeInDown"   data-wow-duration="4s">
+					<canvas id="canvas7"></canvas>
+					<p class="text-center">Node2 Himidity Average <span class="red" id="hum2" style="color:rgb(255, 205, 86); font-size:18px; font-weight: bold"></span></p>
+				</div>
+				<div  class="col-md-4  wow fadeInRight"  data-wow-duration="4s">
+					<canvas id="canvas8"></canvas>
+					<p class="text-center">Node3 Himidity Average <span class="red" id="hum3" style="color: rgb(153, 102, 255); font-size:18px; font-weight: bold"></span></hp>
+				</div>
+				<div class="col-md-4  wow fadeInLeft"  data-wow-duration="4s">
+					<canvas id="canvas9"></canvas>
+					<p class="text-center">Node4 Himidity Average <span class="red" id="hum4" style="color: rgb(255, 99, 132); font-size:18px; font-weight: bold"></span></hp>
+				</div>
+				<div  class="col-md-4  wow fadeInRight"  data-wow-duration="4s">
+					<canvas id="canvas10"></canvas>
+					<h4 class="text-center">Node5 Himidity Average <span class="red" id="hum5" style="color: rgb(54, 162, 235); font-size:18px; font-weight: bold"></span></h4>
+				</div>
+			</div>
+
+			<br>
+
+			<!-- ############################# CO2 ############################################################################### -->
+			<div style="display: flex;text-align: center;justify-content: center;">
+				<h4 style="font-weight:bold">IOT Topology Average's CO2 : <span id="co2G" style="color: rgb(255, 99, 132); font-size:20px; font-weight: bold"></span></h4>
+			</div>
+			<div class="row">
+				<div class="container pd-b-30" style="display: flex;text-align: center;justify-content: center;">
+					<div class="col-md-4  wow fadeInLeft"  data-wow-duration="4s">
+						<canvas id="canvas11"></canvas>
+						<p class="text-center">Node1 CO2 Average <span class="red" id="co21" style="color: rgb(54, 162, 235);  font: size 18px; font-weight: bold"></span></hp>
+					</div>
+					<div class="col-md-4 wow fadeInDown"   data-wow-duration="4s">
+						<canvas id="canvas12"></canvas>
+						<p class="text-center">Node2 CO2 Average <span class="red" id="co22" style="color:rgb(255, 205, 86); font-size:18px; font-weight: bold"></span></p>
+					</div>
+					<div  class="col-md-4  wow fadeInRight"  data-wow-duration="4s">
+						<canvas id="canvas13"></canvas>
+						<p class="text-center">Node3 CO2 Average <span class="red" id="co23" style="color: rgb(153, 102, 255); font-size:18px; font-weight: bold"></span></hp>
+					</div>
+					<div class="col-md-4  wow fadeInLeft"  data-wow-duration="4s">
+						<canvas id="canvas14"></canvas>
+						<p class="text-center">Node4 CO2 Average <span class="red" id="co24" style="color: rgb(255, 99, 132); font-size:18px; font-weight: bold"></span></hp>
+					</div>
+					<div  class="col-md-4  wow fadeInRight"  data-wow-duration="4s">
+						<canvas id="canvas15"></canvas>
+						<h4 class="text-center">Node5 CO2 Average <span class="red" id="co25" style="color: rgb(54, 162, 235); font-size:18px; font-weight: bold"></span></h4>
+					</div>
+				</div>
+
+			<br>
+			<!-- ############################################################################################################ -->
+			<div style="display: flex;text-align: center;justify-content: center;">
+				<h4 style="font-weight:bold">IOT Topology Average's PH : <span id="phG" style="color: rgb(255, 99, 132); font-size:20px; font-weight: bold"></span></h4>
+			</div>
+			<div class="row">
+				<div class="container pd-b-30" style="display: flex;text-align: center;justify-content: center;">
+					<div class="col-md-4  wow fadeInLeft"  data-wow-duration="4s">
+						<canvas id="canvas16"></canvas>
+						<p class="text-center">Node1 PH Average <span class="red" id="ph1" style="color: rgb(54, 162, 235);  font: size 18px; font-weight: bold"></span></hp>
+					</div>
+					<div class="col-md-4 wow fadeInDown"   data-wow-duration="4s">
+						<canvas id="canvas17"></canvas>
+						<p class="text-center">Node2 PH Average <span class="red" id="ph2" style="color:rgb(255, 205, 86); font-size:18px; font-weight: bold"></span></p>
+					</div>
+					<div  class="col-md-4  wow fadeInRight"  data-wow-duration="4s">
+						<canvas id="canvas18"></canvas>
+						<p class="text-center">Node3 PH Average <span class="red" id="ph3" style="color: rgb(153, 102, 255); font-size:18px; font-weight: bold"></span></hp>
+					</div>
+					<div class="col-md-4  wow fadeInLeft"  data-wow-duration="4s">
+						<canvas id="canvas19"></canvas>
+						<p class="text-center">Node4 PH Average <span class="red" id="ph4" style="color: rgb(255, 99, 132); font-size: 18px; font-weight: bold"></span></hp>
+					</div>
+					<div  class="col-md-4  wow fadeInRight"  data-wow-duration="4s">
+						<canvas id="canvas20"></canvas>
+						<h4 class="text-center">Node5 PH Average <span class="red" id="ph5" style="color: rgb(54, 162, 235); font-size:18px; font-weight: bold"></span></h4>
+					</div>
+				</div>
+			
+			<br>
+			<!-- ############################################################################################################ -->
+			<div style="display: flex;text-align: center;justify-content: center;">
+				<h4 style="font-weight:bold">Camera : <span id="phG" style="color: rgb(255, 99, 132); font-size:30px; font-weight: bold"></span></h4>
+				
+			</div>
+			<div class="row">
+			<div class="container pd-b-30" style="display: flex;text-align: center;justify-content: center;">
+				<div class="col-md-4  wow fadeInLeft"  data-wow-duration="4s">
+					<img id="canvas16" src="{{ url_for('video_feed') }}" width="250" height="250">
+					<p class="text-center">Node1 camera <span class="red" id="ph1" style="color: rgb(54, 162, 235);  font: size 24px; font-weight: bold"></span></hp>
+				</div>
+				<div class="col-md-4 wow fadeInDown"   data-wow-duration="4s">
+					<img id="canvas17" src="{{ url_for('video_feed') }}" width="250" height="250">
+					<p class="text-center">Node2 camera <span class="red" id="ph2" style="color:rgb(255, 205, 86); font-size:24px; font-weight: bold"></span></p>
+				</div>
+				<div  class="col-md-4  wow fadeInRight"  data-wow-duration="4s">
+					<img id="canvas18" src="{{ url_for('video_feed') }}" width="250" height="250">
+					<p class="text-center">Node3 camera <span class="red" id="ph3" style="color: rgb(153, 102, 255); font-size:24px; font-weight: bold"></span></hp>
+				</div>
+				<div class="col-md-4  wow fadeInLeft"  data-wow-duration="4s">
+					<img id="canvas19" src="{{ url_for('video_feed') }}" width="250" height="250">
+					<p class="text-center">Node4 camera <span class="red" id="ph4" style="color: rgb(255, 99, 132); font-size:24px; font-weight: bold"></span></hp>
+				</div>
+				<div  class="col-md-4  wow fadeInRight"  data-wow-duration="4s">
+					<img id="canvas20" src="{{ url_for('video_feed') }}" width="250" height="250">
+					<h4 class="text-center">Node5 camera <span class="red" id="ph5" style="color: rgb(54, 162, 235); font-size:24px; font-weight: bold"></span></h4>
+				</div>
+			</div>
+
+
+			<!-- ############################################################################################################ -->
+			<br><br><br>
+			<div class="led-container">
+				<div class="led-box">
+					<div class="led-orange-inactive" id="led-orange"></div>
+				</div>
+				<div class="led-box">
+					<div class="led-green-inactive" id="led-green"></div>
+				</div>
+				<div class="led-box">
+					<div class="led-red-inactive" id="led-red"></div>
+				</div>
+			</div>
+		</div>	
+	</div>
+
+	<br><br><br>
+
+
+</body>
+<script src="{{ url_for('static', filename='js/wow.js') }}"></script>
+<script src="{{ url_for('static', filename='js/graphe.js') }}"></script>
+</html>
